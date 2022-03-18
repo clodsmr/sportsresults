@@ -4,7 +4,7 @@ import SingleEvent from "./SingleEvent";
 
 export default function EventList (events) {
 
-    console.log("props", events.events.events)
+  /*   console.log("props", events.events.events) */
 
     return(
 
