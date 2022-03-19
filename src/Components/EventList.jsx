@@ -4,10 +4,10 @@ import SingleEvent from "./SingleEvent";
 
 export default function EventList (events) {
 
-  /*   console.log("props", events.events.events) */
+   /*  console.log("props", events.events.events) */
 
     return(
-
+<>
         <Table striped bordered hover>
   <thead>
     <tr>
@@ -20,21 +20,22 @@ export default function EventList (events) {
     </tr>
   </thead>
   <tbody>
+      <>
     {
-        events.events.events.map((e)=> (
+        events.events?.map((e)=> (
 
            
              <>
-             { console.log("my key is", e.idEvent)}
+          
         
             <SingleEvent key={e.idEvent} event={e} />
             </> 
         ))
     }
-  
+  </>
   </tbody>
 </Table>
-
+</>
     )
 }
 

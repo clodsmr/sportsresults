@@ -3,13 +3,15 @@ import { Container, Alert, Spinner, Row, Col, Form } from "react-bootstrap";
 import EventList from "./EventList";
 
 export default function Home() {
+
+
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [year, setYear] = useState("");
-  const [team, setTeam] = useState(null);
+  const [year, setYear] = useState("2020-2021");
+  const [team, setTeam] = useState("");
   const [filteredEvents, setFilteredEvents] = useState([])
-
+  const filteredArray = []
 const yearArray = []
 
 for (let i=2000; i<2022; i++) {
@@ -19,9 +21,11 @@ for (let i=2000; i<2022; i++) {
     
 
 }
+ 
 
 
   const fetchEvents = async (season) => {
+      
     let URL = `https://www.thesportsdb.com/api/v1/json/2/eventsseason.php?id=4328&s=${season}`;
 
     try {
@@ -33,6 +37,7 @@ for (let i=2000; i<2022; i++) {
         setEvents(data);
         setIsLoading(false);
         setIsError(false);
+        
       } else {
         // we'll fall here if the URL is mispelled or if the server has a problem
         console.log("an error happened in the fetch!");
@@ -41,28 +46,42 @@ for (let i=2000; i<2022; i++) {
       }
     } catch (error) {
       // this is for a more generic error
-      console.log(error);
+      console.log("inside the catch block", error);
       setIsLoading(false);
       setIsError(true);
     }
   };
 
- const filteredByTeam = (events) => {
-       
-    console.log("inside filter function", events)
-    events.events.map((e)=> {
-        if (e.strAwayTeam.toLowerCase()===team) {
-            console.log("we have a match")
-           setFilteredEvents(e.strAwayTeam.toLowerCase())
-        }else if (e.strHomeTeam.toLowerCase()=== team) {
-            console.log("we have a match")
-            setFilteredEvents(e.strHomeTeam.toLowerCase())
-        }else {
-            console.log("we don't have this team")
-        setFilteredEvents(null)}
+  const filteredByTeam = (events) => {
+
+    console.log("filtering function", events.events)
+    events.events?.map((e)=> {
+
+        if (team === e.strAwayTeam.toLowerCase()||team === e.strHomeTeam.toLowerCase()) {
+           
+            filteredArray.push(e)
+            console.log("I'll show you this team last events", filteredArray)
+ 
+      }else {
+ 
+          console.log("I don't have this team in my records")
+      }
+
     })
-   
- } 
+    /* events.events.events.map((e)=> {
+
+     if (team === e.strAwayTeam.toLowerCase()||team === e.strHomeTeam.toLowerCase()) {
+           
+           filteredArray.push(e)
+           console.log("I'll show you this team last events", filteredArray)
+
+     }else {
+
+         console.log("I don't have this team in my records")
+     }
+    }) */
+
+}
 
   useEffect(() => {
     fetchEvents("2020-2021");
@@ -74,9 +93,10 @@ for (let i=2000; i<2022; i++) {
   }, [year])
 
   useEffect(()=> {
-      console.log(events)
-     filteredByTeam(events)
+      filteredByTeam(events)
   }, [team])
+
+  
 
   return (
     <>
@@ -91,8 +111,10 @@ for (let i=2000; i<2022; i++) {
 
         <Row>
           <Col xs={6}>
-              {team ? <EventList events={filteredEvents} /> : <EventList events={events} />}
-            
+        {team ? <EventList events={filteredArray}/> :  <EventList events={events.events} />}
+         {/*  {team.length > 3 &&  <EventList events={filteredArray}/> }
+        {team.length < 3 &&   <EventList events={events.events} />} */}
+           
           </Col>
           <Col xs={6}>
             <Form >
