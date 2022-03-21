@@ -10,7 +10,7 @@ export default function EventList(events) {
       {/*  here I structure the table that I will then fill with the data from the API,
        it allows me to reuse it with another data such as events of one single team */}
 
-      <Table striped bordered hover>
+      <Table className="d-flex flex-column">
         <thead>
           <tr>
             <th>Data</th>
@@ -26,7 +26,7 @@ export default function EventList(events) {
             {events.events?.map((e) => (
               <>
                 {/*   single event gets the data array and display it in the proper columns of the table */}
-                
+
                 <SingleEvent key={e.idEvent} event={e} />
               </>
             ))}

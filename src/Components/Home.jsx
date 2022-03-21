@@ -10,7 +10,7 @@ export default function Home() {
   const [isError, setIsError] = useState(false);
   const [year, setYear] = useState("2020-2021");
   const [team, setTeam] = useState("");
-  const [filteredEvents, setFilteredEvents] = useState([])
+  
   const filteredArray = []
 const yearArray = []
 
@@ -110,7 +110,7 @@ for (let i=2000; i<2022; i++) {
     <>
       <Container fluid>
         <Row>
-          <h3>PAST EVENTS</h3>
+          <h1>ENGLAND PREMIER LEAGUE</h1>
         {/*  if there is an error I will see an alert or a spinner if the loading isn't finished and I don't still have fetched the data*/} 
           {isError && (
             <Alert variant="danger">We got an error! </Alert>
@@ -119,17 +119,11 @@ for (let i=2000; i<2022; i++) {
         </Row>
 
         <Row>
-          <Col xs={6}>
-
-            {/*   here I want to dinamically display the events fetched by passing them as props to EventList component */}
-        <EventList events={events.events} />
-        
-          </Col>
-          <Col xs={6}>
+        <Col xs={12}>
             <Form >
              
               <Form.Group controlId="exampleForm.ControlSelect1">
-                <Form.Label>Filter by season</Form.Label>
+                <Form.Label style={{marginLeft:"5px"}}>Filter by season</Form.Label>
                 <Form.Control as="select" value={year} onChange={(e)=>{
                    
                     setYear(e.target.value)
@@ -142,6 +136,16 @@ for (let i=2000; i<2022; i++) {
               
             </Form>
           </Col>
+            
+          <Col xs={12} >
+          <div className="d-flex flex-column">
+              <h3>Events of season: {year}</h3>
+            {/*   here I want to dinamically display the events fetched by passing them as props to EventList component */}
+        <EventList events={events.events} />
+        </div>
+          </Col>
+          
+         
         </Row>
       </Container>
     </>
