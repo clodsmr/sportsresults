@@ -14,6 +14,8 @@ export default function Home() {
   const filteredArray = []
 const yearArray = []
 
+//here I dinamically build the array of seasons so I don't have to manually write every option later
+
 for (let i=2000; i<2022; i++) {
 
     let seasons = `${i}-${i+1}`
@@ -22,7 +24,7 @@ for (let i=2000; i<2022; i++) {
 
 }
  
-
+//here I fetch the events from the API but I can change the key for the season in the URL in order to fetch different data
 
   const fetchEvents = async (season) => {
       
@@ -68,6 +70,9 @@ for (let i=2000; i<2022; i++) {
       }
 
     })
+
+    //For further implementation I could filter the events by team
+
     /* events.events.events.map((e)=> {
 
      if (team === e.strAwayTeam.toLowerCase()||team === e.strHomeTeam.toLowerCase()) {
@@ -83,18 +88,21 @@ for (let i=2000; i<2022; i++) {
 
 }
 
+//the app will fetch the 2020-2021 season events when mounting
+
   useEffect(() => {
     fetchEvents("2020-2021");
    
   }, []);
+//if I change the year (season) the function fetchEvents is called again in order to fetch data from the targeted season
 
   useEffect(()=> {
       fetchEvents(year);
   }, [year])
 
-  useEffect(()=> {
+  /* useEffect(()=> {
       filteredByTeam(events)
-  }, [team])
+  }, [team]) */
 
   
 
@@ -103,18 +111,19 @@ for (let i=2000; i<2022; i++) {
       <Container fluid>
         <Row>
           <h3>PAST EVENTS</h3>
+        {/*  if there is an error I will see an alert or a spinner if the loading isn't finished and I don't still have fetched the data*/} 
           {isError && (
-            <Alert variant="danger">Aww snap, we got an error! :(</Alert>
+            <Alert variant="danger">We got an error! </Alert>
           )}
           {isLoading && <Spinner animation="border" variant="success" />}
         </Row>
 
         <Row>
           <Col xs={6}>
-        {team ? <EventList events={filteredArray}/> :  <EventList events={events.events} />}
-         {/*  {team.length > 3 &&  <EventList events={filteredArray}/> }
-        {team.length < 3 &&   <EventList events={events.events} />} */}
-           
+
+            {/*   here I want to dinamically display the events fetched by passing them as props to EventList component */}
+        <EventList events={events.events} />
+        
           </Col>
           <Col xs={6}>
             <Form >
@@ -129,15 +138,6 @@ for (let i=2000; i<2022; i++) {
                       <option>{y}</option>
                   ))}
                 </Form.Control>
-              </Form.Group>
-             
-              <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Filter by Team</Form.Label>
-                <Form.Control as="textarea" rows={1} onChange={(e)=> {
-                    setTeam(e.target.value.toLowerCase())
-                    console.log(team)
-                  
-                }}/>
               </Form.Group>
               
             </Form>
